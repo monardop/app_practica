@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import sqlite3
 import requests
-import datetime
+from datetime import datetime
 import sys
 
 
@@ -25,8 +25,9 @@ class Venta():
         price = self.dollar_quote()
         total = self.total_sale(price, cs, cd, ct, dessert)
         self.submit_sale(client,cs,cd,ct,dessert, total)
+        self.total = total
 
-    def dollar_quote():
+    def dollar_quote(self):
         """
         Summary: 
             I use an API that returns the price of the dollar in Argentina.
@@ -41,14 +42,14 @@ class Venta():
         except:
             messagebox.showerror(title="Error grave", message="Sin internet para cotizar. Terminado")
             sys.exit()
-    def total_sale(price: float, cs: int, cd: int, ct: int, p: int):
+    def total_sale(self, price: float, cs: int, cd: int, ct: int, p: int):
         cs *= price
         cd *= price
         ct *= price
         p *= price
         total = cs + cd + ct + p
         return total
-    def submit_sale(name:str, cs: int, cd: int, ct: int, p: int, total: float):
+    def submit_sale(self, name:str, cs: int, cd: int, ct: int, p: int, total: float):
         today = datetime.now().strftime("%a %b %d %H:%M:%S %Y")
         conn = sqlite3.connect("comercio.sqlite")
         cursor = conn.cursor()
