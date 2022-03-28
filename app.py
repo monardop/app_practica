@@ -7,13 +7,41 @@ import sys
 
 
 class App():
-    pass
+    def __init__(self, master):
+        pass
 class LabelFrame(App):
     pass
 class EntryFrame(App):
-    pass
+    def __init__(self):
+        super().__init__(App)
 class Buttons(App):
-    pass
+    def __init__():
+        pass
+    def borrar_celdas():
+        pass
+    def ventana_confirmar(self, message: str):
+        respuesta = messagebox.askyesno(title="Confirmar" ,message=f"{message}")
+        return respuesta
+    def cargar_registro(self, encargado: str, operacion: str, caja: float):
+        today = datetime.now().strftime("%a %b %d %H:%M:%S %Y")
+        conn = sqlite3.connect("comercio.sqlite")
+        cursor = conn.cursor()
+        try:
+            cursor.execute("INSERT INTO registro VALUES (null,?,?,?,?)", encargado, today, operacion,caja)
+        except sqlite3.OperationalError:
+            cursor.execute("""CREATE TABLE registro 
+            ( 
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                encargado TEXT,
+                fecha TEXT,
+                evento TEXT,
+                caja REAL
+            )
+            """)
+        cursor.execute("INSERT INTO registro VALUES (null,?,?,?,?)", encargado, today, operacion,caja)
+        conn.commit()
+        conn.close
+
 class Cancel(Buttons):
     pass
 class Submit(Buttons):
@@ -73,4 +101,7 @@ class Venta():
         conn.close
 
 if __name__ == "__main__":
-    pass
+    root = Tk()
+    root.minsize(800, 600)
+    app = App(root)
+    root.mainloop()
